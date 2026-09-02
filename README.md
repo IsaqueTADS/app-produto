@@ -1,50 +1,136 @@
-# Welcome to your Expo app 👋
+# 📦 App Produto — Cadastro de Produtos no Estoque
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **Projeto acadêmico** — Desenvolvimento Mobile (React Native / Expo)
 
-## Get started
+Aplicativo comercial que implementa a interface de **cadastro de um novo produto** para
+registro da entrada de itens no estoque de uma empresa. A tela reproduz o fluxo de
+preenchimento de um formulário corporativo (nome, preço e quantidade) e simula o envio
+da submissão com um alerta nativo de sucesso.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🔍 Objetivo
 
-2. Start the app
+Desenvolver a interface de cadastro de um aplicativo comercial capaz de registrar a
+**entrada de itens no estoque de uma empresa**, aplicando conceitos fundamentais de
+React Native: componentes, `StyleSheet`, design tokens, ícones vetoriais e interação de
+usuário com `Alert`.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## ✨ Funcionalidades
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- **Cabeçalho corporativo** com ícone e título **"Novo Produto"**.
+- **Formulário de entrada de dados** com três campos no padrão *Outlined* (label flutuante
+  sobre o contorno, com cantos arredondados e ícone interno):
+  - **Nome** — ícone de etiqueta (tag), placeholder *"Nome do Produto"*, estado ativo.
+  - **Preço** — ícone de cifrão, placeholder *"R$ 0,00"*, estado inativo.
+  - **Quantidade de Entrada** — ícone de caixa/pacote, placeholder *"0"*, estado ativo.
+- **Botão de ação** na cor primária do sistema, com sombra e texto **"CADASTRAR PRODUTO"**.
+- **Simulação de login/submissão**: ao tocar no botão, um `Alert.alert()` exibe
+  *"Sucesso — Ação validada com sucesso!"*.
+- Design responsivo e visual fiel a um aplicativo comercial real.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🛠️ Tecnologias
 
-When you're ready, run:
+| Tecnologia | Função |
+|---|---|
+| [React Native](https://reactnative.dev/) + [Expo SDK 54](https://expo.dev) | Base do aplicativo |
+| [Expo Router](https://docs.expo.dev/router/introduction/) | Navegação baseada em arquivos |
+| [@expo/vector-icons](https://docs.expo.dev/guides/icons/) | Ícones vetoriais (MaterialCommunityIcons) |
+| [TypeScript](https://www.typescriptlang.org/) | Tipagem do código-fonte |
+| [ESLint](https://eslint.org/) | Padrão de código e linting |
 
-```bash
-npm run reset-project
+---
+
+## 📁 Estrutura do Projeto
+
+```
+app-produto/
+├── src/
+│   ├── app/                 # Rotas do Expo Router
+│   │   ├── _layout.tsx      # Layout raiz (Stack)
+│   │   └── index.tsx        # Tela de cadastro de produto
+│   └── constants/
+│       └── theme.ts         # Temas / design tokens (cores e fontes)
+├── assets/                  # Imagens e ícones do aplicativo
+├── app.json                 # Configuração do Expo
+├── package.json             # Dependências e scripts
+├── eslint.config.js         # Configuração do ESLint
+└── tsconfig.json            # Configuração do TypeScript
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 🚀 Como Executar
 
-To learn more about developing your project with Expo, look at the following resources:
+### Pré-requisitos
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- [Node.js](https://nodejs.org/) (LTS)
+- [Expo Go](https://expo.dev/go) instalado no celular **ou** um simulador/emulador configurado
+- Gerenciador de pacotes: `npm` (já incluído com o Node.js)
 
-## Join the community
+### Passo a passo
 
-Join our community of developers creating universal apps.
+```bash
+# 1. Instalar as dependências
+npm install
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+# 2. Iniciar o servidor de desenvolvimento
+npx expo start --clear
+
+# 3. Escanear o QR Code com o Expo Go (Android/iOS)
+#    ou pressione "w" para abrir no navegador
+```
+
+### Scripts úteis
+
+| Comando | Descrição |
+|---|---|
+| `npm start` | Inicia o Expo |
+| `npm run android` | Inicia no emulador Android |
+| `npm run ios` | Inicia no simulador iOS |
+| `npm run web` | Inicia no navegador |
+| `npm run lint` | Executa o ESLint |
+
+---
+
+## 📸 Comprovante Visual
+
+Print da tela rodando no **Expo Go**:
+
+<div align="center">
+  <img src="./docs/screenshot.png" alt="Tela de cadastro de produto" width="300" />
+</div>
+
+---
+
+## 💻 Interface Implementada
+
+<div align="center">
+
+| Elemento | Detalhe |
+|---|---|
+| Cabeçalho | Ícone `package-check` + título **"Novo Produto"** em negrito |
+| Campo 1 | **Nome** — ícone de etiqueta, borda ativa (primária) |
+| Campo 2 | **Preço** — ícone de cifrão, borda inativa (cinza) |
+| Campo 3 | **Quantidade de Entrada** — ícone de pacote, borda ativa (primária) |
+| Botão | **CADASTRAR PRODUTO** — primário, com sombra e `Alert` de sucesso |
+
+</div>
+
+---
+
+## 🎓 Autoria
+
+Projeto desenvolvido como parte das atividades da disciplina de **Desenvolvimento Mobile**,
+com foco em interface de aplicações comerciais em React Native.
+
+---
+
+## 📄 Licença
+
+Este projeto é de uso educacional e está licenciado sob a
+[Licença MIT](./LICENSE).

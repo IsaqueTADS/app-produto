@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-  
+
 const tokens = {
   colors: {
     primary: '#2264B1',
@@ -36,9 +36,7 @@ export default function NovoProdutoScreen() {
       <StatusBar style="dark" />
 
       <View style={styles.header}>
-        <View style={styles.headerIconBox}>
-          <MaterialCommunityIcons name="check" size={26} color={tokens.colors.primary} />
-        </View>
+        <MaterialCommunityIcons name="package-check" size={32} color={tokens.colors.primary} />
         <Text style={styles.headerTitle}>Novo Produto</Text>
       </View>
 
@@ -117,15 +115,6 @@ const styles = StyleSheet.create({
     marginTop: 72,
     marginBottom: 40,
     gap: 16,
-  },
-  headerIconBox: {
-    width: 48,
-    height: 48,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: tokens.colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 28,

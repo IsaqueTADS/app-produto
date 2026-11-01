@@ -1,35 +1,76 @@
-# 📦 App Produto — Cadastro de Produtos no Estoque
+# 📦 App Produto — Controle de Estoque
 
 > **Projeto acadêmico** — Desenvolvimento Mobile (React Native / Expo)
 
-Aplicativo comercial que implementa a interface de **cadastro de um novo produto** para
-registro da entrada de itens no estoque de uma empresa. A tela reproduz o fluxo de
-preenchimento de um formulário corporativo (nome, preço e quantidade) e simula o envio
-da submissão com um alerta nativo de sucesso.
+Aplicativo comercial para **cadastro de produtos**, **registro de saídas** e
+**consulta do estoque** de uma empresa. Os dados ficam salvos no próprio
+dispositivo, então o que é cadastrado continua disponível depois de fechar o app.
 
 ---
 
-## 🔍 Objetivo
+## 📋 Sobre o projeto
 
-Desenvolver a interface de cadastro de um aplicativo comercial capaz de registrar a
-**entrada de itens no estoque de uma empresa**, aplicando conceitos fundamentais de
-React Native: componentes, `StyleSheet`, design tokens, ícones vetoriais e interação de
-usuário com `Alert`.
+O app simula o fluxo básico de um sistema de estoque: o operador cadastra um
+produto com preço e quantidade inicial, retira itens informando o motivo e
+acompanha a posição atual do est![![alt text](image-1.png)](image.png)oque em uma lista com alerta de estoque baixo.
+
+A navegação é feita por uma **barra de abas inferior** com três telas:
+
+| Aba | Tela | Função |
+|---|---|---|
+| **Novo Produto** | Cadastro | Registra um produto no estoque |
+| **Saída** | Saída de Produtos | Retira unidades de um produto |
+| **Estoque** | Controle de Estoque | Lista os produtos e o status de cada um |
 
 ---
 
 ## ✨ Funcionalidades
 
-- **Cabeçalho corporativo** com ícone e título **"Novo Produto"**.
-- **Formulário de entrada de dados** com três campos no padrão *Outlined* (label flutuante
-  sobre o contorno, com cantos arredondados e ícone interno):
-  - **Nome** — ícone de etiqueta (tag), placeholder *"Nome do Produto"*, estado ativo.
-  - **Preço** — ícone de cifrão, placeholder *"R$ 0,00"*, estado inativo.
-  - **Quantidade de Entrada** — ícone de caixa/pacote, placeholder *"0"*, estado ativo.
-- **Botão de ação** na cor primária do sistema, com sombra e texto **"CADASTRAR PRODUTO"**.
-- **Simulação de login/submissão**: ao tocar no botão, um `Alert.alert()` exibe
-  *"Sucesso — Ação validada com sucesso!"*.
-- Design responsivo e visual fiel a um aplicativo comercial real.
+### Novo Produto
+
+- Formulário com **Nome**, **Preço**, **Quantidade de Entrada** e **Estoque Mínimo**.
+- Campos no padrão *Outlined*, com **label flutuante**, ícone interno e placeholder.
+- O label fica sobre a borda superior e muda para azul quando o campo está ativo ou focado.
+- Aceita preço no formato brasileiro (`10,50`) e no formato com ponto (`10.50`).
+- Valida os dados antes de salvar e exibe um alerta de sucesso ou de erro.
+- Todos os campos são limpos após o cadastro.
+
+### Saída de Produtos
+
+- Seleção do produto em uma **lista modal**, que mostra a quantidade disponível.
+- Informe a quantidade de saída e o **motivo**: Venda, Avarias ou Uso Interno.
+- Bloqueia quantidades maiores do que o estoque disponível.
+- Atualiza o estoque na hora e registra a movimentação com data e hora.
+- A lista de produtos é recarregada sempre que a tela recebe foco.
+
+### Controle de Estoque
+
+- Lista com nome, quantidade atual e **badge de status**.
+- Dois estados: **Em Estoque** (verde) e **Estoque Baixo** (vermelho).
+- Exibe uma mensagem quando nenhum produto foi cadastrado ainda.
+
+### Persistência e interface
+
+- Dados salvos com **AsyncStorage**, no dispositivo, sem backend.
+- Operações de leitura e escrita enfileiradas para evitar condições de corrida.
+- Layout responsivo, limitado a **480 pt** e centralizado em telas largas.
+- Barra de abas com altura fixa somada à **safe area** (notch e barra inferior).
+- No navegador, o contorno padrão de foco dos inputs é removido e o destaque
+  passa a ser a borda azul do próprio componente.
+
+---
+
+## 🧠 Regras de negócio
+
+- **Preço** deve ser um número maior que zero.
+- **Quantidade de entrada** e **estoque mínimo** devem ser inteiros não negativos.
+- **Saída** deve ser um inteiro maior que zero e menor ou igual ao saldo atual.
+- Um produto é considerado em **estoque baixo** quando
+  `quantidade <= estoqueMinimo`.
+- Cada saída gera uma movimentação com produto, quantidade, motivo e data.
+
+As validações de formulário ficam em `src/models/produto.ts`; as regras que
+dependem do estoque salvo ficam em `src/services/produtos.ts`.
 
 ---
 
@@ -37,10 +78,13 @@ usuário com `Alert`.
 
 | Tecnologia | Função |
 |---|---|
-| [React Native](https://reactnative.dev/) + [Expo SDK 54](https://expo.dev) | Base do aplicativo |
+| [React Native](https://reactnative.dev/) + [Expo SDK 54](https://docs.expo.dev/versions/v54.0.0/) | Base do aplicativo |
 | [Expo Router](https://docs.expo.dev/router/introduction/) | Navegação baseada em arquivos |
+| [React Navigation](https://reactnavigation.org/) | Abas inferiores |
+| [AsyncStorage](https://react-native-async-storage.github.io/async-storage/) | Persistência local dos dados |
 | [@expo/vector-icons](https://docs.expo.dev/guides/icons/) | Ícones vetoriais (MaterialCommunityIcons) |
-| [TypeScript](https://www.typescriptlang.org/) | Tipagem do código-fonte |
+| [react-native-safe-area-context](https://docs.expo.dev/develop/user-interface/safe-areas/) | Safe area do cabeçalho e das abas |
+| [TypeScript](https://www.typescriptlang.org/) | Tipagem do código-fonte (modo `strict`) |
 | [ESLint](https://eslint.org/) | Padrão de código e linting |
 
 ---
@@ -50,17 +94,50 @@ usuário com `Alert`.
 ```
 app-produto/
 ├── src/
-│   ├── app/                 # Rotas do Expo Router
-│   │   ├── _layout.tsx      # Layout raiz (Stack)
-│   │   └── index.tsx        # Tela de cadastro de produto
-│   └── constants/
-│       └── theme.ts         # Temas / design tokens (cores e fontes)
-├── assets/                  # Imagens e ícones do aplicativo
-├── app.json                 # Configuração do Expo
-├── package.json             # Dependências e scripts
-├── eslint.config.js         # Configuração do ESLint
-└── tsconfig.json            # Configuração do TypeScript
+│   ├── app/                        # Rotas do Expo Router
+│   │   ├── _layout.tsx             # Layout raiz (Stack)
+│   │   └── (tabs)/
+│   │       ├── _layout.tsx         # Barra de abas inferior
+│   │       ├── index.tsx           # Novo Produto
+│   │       ├── saida.tsx           # Saída de Produtos
+│   │       └── estoque.tsx         # Controle de Estoque
+│   ├── components/
+│   │   ├── novo-produto/
+│   │   │   ├── product-form/       # ScrollView + botão de envio
+│   │   │   └── product-fields/     # Campos do cadastro
+│   │   ├── saida-produto/
+│   │   │   ├── exit-form/          # Formulário de saída
+│   │   │   └── product-selector/   # Seleção do produto
+│   │   ├── controle-estoque/
+│   │   │   ├── stock-list/         # Lista de produtos
+│   │   │   └── stock-item/         # Cartão com status do produto
+│   │   └── ui/                     # Componentes reutilizáveis
+│   │       ├── badge/              # Etiqueta de status
+│   │       ├── button/             # Botão primário
+│   │       ├── field/              # Moldura do campo + label flutuante
+│   │       ├── header/             # Cabeçalho das telas
+│   │       ├── input/              # Campo de texto
+│   │       ├── select/             # Campo de seleção com modal
+│   │       ├── tab-button/         # Botão da barra de abas
+│   │       └── types.ts            # Tipos compartilhados
+│   ├── constants/
+│   │   └── theme.ts                # Design tokens e largura máxima
+│   ├── hooks/
+│   │   └── use-produtos.ts         # Lista de produtos com recarga ao focar
+│   ├── models/
+│   │   └── produto.ts              # Tipos, validações e regras de status
+│   └── services/
+│       └── produtos.ts             # Persistência e operações no estoque
+├── assets/images/                  # Ícones e splash screen
+├── docs/screenshot.png             # Print do aplicativo
+├── app.json                        # Configuração do Expo
+├── eslint.config.js                # Configuração do ESLint
+├── package.json                    # Dependências e scripts
+└── tsconfig.json                   # Configuração do TypeScript
 ```
+
+Cada componente mantém o padrão `index.tsx` + `style.ts` na mesma pasta. Os
+imports usam o alias `@/*`, que aponta para `src/`.
 
 ---
 
@@ -95,31 +172,73 @@ npx expo start --clear
 | `npm run web` | Inicia no navegador |
 | `npm run lint` | Executa o ESLint |
 
+### Verificação
+
+```bash
+# Tipos do TypeScript
+npx tsc --noEmit
+
+# Build web estático
+npx expo export --platform web
+```
+
+---
+
+## 🗃️ Modelo de dados
+
+Tudo é gravado em uma única chave do AsyncStorage:
+`@app-produto:estoque`, com o formato `{ produtos, movimentacoes }`.
+
+| Tipo | Campos principais |
+|---|---|
+| `Produto` | `id`, `nome`, `preco`, `quantidade`, `estoqueMinimo` |
+| `SaidaProduto` | `produtoId`, `quantidade`, `motivo` |
+| `Movimentacao` | `id`, `produtoNome`, `data` + dados da saída |
+
+O histórico de movimentações já é gravado, mas ainda **não tem tela de consulta**.
+
+---
+
+## 🎨 Padrões de interface
+
+As cores ficam centralizadas em `src/constants/theme.ts` e não são repetidas
+nos componentes:
+
+| Token | Valor | Uso |
+|---|---|---|
+| `primary` | `#2264B1` | Borda ativa, ícones e botão |
+| `background` | `#F6F8FB` | Fundo das telas |
+| `textDark` | `#111111` | Texto principal |
+| `textMuted` | `#7A7A7A` | Labels inativos e placeholders |
+| `success` | `#2E7D32` | Badge "Em Estoque" |
+| `danger` | `#C62828` | Badge "Estoque Baixo" |
+
+O conteúdo é limitado por `layout.larguraMaxima` (480 pt) e centralizado, para
+não esticar em tablets e no navegador.
+
 ---
 
 ## 📸 Comprovante Visual
 
-Print da tela rodando no **Expo Go**:
+Print da tela de cadastro na versão inicial do projeto:
 
 <div align="center">
   <img src="./docs/screenshot.png" alt="Tela de cadastro de produto" width="300" />
 </div>
 
+> O print é anterior à navegação por abas. Para atualizá-lo, rode o app no
+> Expo Go e gere uma nova captura em `docs/screenshot.png`.
+
 ---
 
-## 💻 Interface Implementada
+## ⚠️ Limitações conhecidas
 
-<div align="center">
-
-| Elemento | Detalhe |
-|---|---|
-| Cabeçalho | Ícone `package-check` + título **"Novo Produto"** em negrito |
-| Campo 1 | **Nome** — ícone de etiqueta, borda ativa (primária) |
-| Campo 2 | **Preço** — ícone de cifrão, borda inativa (cinza) |
-| Campo 3 | **Quantidade de Entrada** — ícone de pacote, borda ativa (primária) |
-| Botão | **CADASTRAR PRODUTO** — primário, com sombra e `Alert` de sucesso |
-
-</div>
+- No **navegador**, `Alert.alert` não exibe nada (é um no-op do `react-native-web`);
+  no Android e no iOS os alertas funcionam normalmente.
+- Ainda não há telas para **editar ou excluir** produtos, nem para consultar o
+  histórico de movimentações.
+- O projeto não possui testes automatizados no repositório; a verificação é
+  feita com TypeScript, ESLint e build.
 
 ---
 
@@ -132,5 +251,4 @@ com foco em interface de aplicações comerciais em React Native.
 
 ## 📄 Licença
 
-Este projeto é de uso educacional e está licenciado sob a
-[Licença MIT](./LICENSE).
+Projeto de uso educacional, sem fins comerciais.

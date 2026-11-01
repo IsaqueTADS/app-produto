@@ -1,6 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 import { tokens } from '@/constants/theme';
+
+// Com outline-style "auto" o navegador ignora outline-width e desenha o anel escuro de foco;
+// "solid" com largura zero remove o contorno, e o foco do app passa a ser a borda azul.
+export const semContornoWeb: ViewStyle & TextStyle = { outlineStyle: 'solid', outlineWidth: 0 };
 
 export const styles = StyleSheet.create({
   field: {
@@ -8,13 +12,15 @@ export const styles = StyleSheet.create({
   },
   label: {
     position: 'absolute',
-    top: -9,
+    top: -8,
     left: 12,
     zIndex: 1,
     paddingHorizontal: 6,
     backgroundColor: tokens.colors.background,
     fontSize: 13,
+    lineHeight: 16,
     fontWeight: '600',
+    includeFontPadding: false,
   },
   labelAtivo: {
     color: tokens.colors.primary,

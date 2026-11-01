@@ -34,8 +34,9 @@ export function Select<T extends string>({
   disabled = false,
 }: SelectProps<T>) {
   const [aberto, setAberto] = useState(false);
+  const [focado, setFocado] = useState(false);
   const selecionado = options.find((option) => option.value === value);
-  const cor = active ? tokens.colors.primary : tokens.colors.textMuted;
+  const cor = active || focado || aberto ? tokens.colors.primary : tokens.colors.textMuted;
 
   const escolher = (novo: T) => {
     onChange(novo);
@@ -48,8 +49,11 @@ export function Select<T extends string>({
         label={label}
         icon={icon}
         active={active}
+        focused={focado || aberto}
         disabled={disabled}
         onPress={() => setAberto(true)}
+        onFocus={() => setFocado(true)}
+        onBlur={() => setFocado(false)}
       >
         <Text style={[styles.valor, !selecionado && styles.placeholder]} numberOfLines={1}>
           {selecionado?.label ?? placeholder}

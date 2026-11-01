@@ -2,7 +2,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
 import { StockList } from '@/components/controle-estoque/stock-list';
 import { Header } from '@/components/ui/header';
-import { tokens } from '@/constants/theme';
+import { layout, tokens } from '@/constants/theme';
 import { useProdutos } from '@/hooks/use-produtos';
 
 export default function EstoqueScreen() {
@@ -23,6 +23,9 @@ export default function EstoqueScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    maxWidth: layout.larguraMaxima,
+    alignSelf: 'center',
   },
   carregando: {
     marginTop: 48,

@@ -3,6 +3,7 @@ import { Alert, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native'
 
 import { ProductForm } from '@/components/novo-produto/product-form';
 import { Header } from '@/components/ui/header';
+import { layout } from '@/constants/theme';
 import { FormularioProduto, interpretarProduto } from '@/models/produto';
 import { cadastrarProduto, mensagemDeErro } from '@/services/produtos';
 
@@ -66,5 +67,8 @@ export default function NovoProdutoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    maxWidth: layout.larguraMaxima,
+    alignSelf: 'center',
   },
 });

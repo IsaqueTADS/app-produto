@@ -13,3 +13,7 @@ export const tokens = {
     dangerBackground: '#FDECEA',
   },
 };
+
+export const layout = {
+  larguraMaxima: 480,
+};

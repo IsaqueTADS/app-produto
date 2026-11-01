@@ -3,7 +3,7 @@ import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, StyleSheet } 
 
 import { ExitForm } from '@/components/saida-produto/exit-form';
 import { Header } from '@/components/ui/header';
-import { tokens } from '@/constants/theme';
+import { layout, tokens } from '@/constants/theme';
 import { useProdutos } from '@/hooks/use-produtos';
 import { FormularioSaida, interpretarSaida } from '@/models/produto';
 import { mensagemDeErro, registrarSaida } from '@/services/produtos';
@@ -82,6 +82,9 @@ export default function SaidaScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    width: '100%',
+    maxWidth: layout.larguraMaxima,
+    alignSelf: 'center',
   },
   carregando: {
     marginTop: 48,
